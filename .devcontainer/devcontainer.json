@@ -1,0 +1,136 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the
+// README at: https://github.com/devcontainers/templates/tree/main/src/alpine
+{
+    "name": "MCP-Lab Devcontainer",
+    // Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
+    // "image": "mcr.microsoft.com/devcontainers/base:alpine-3.20"
+    "dockerComposeFile": "docker-compose.yml",
+    "service": "app",
+    // "build": {
+    // 	// Path is relative to the devcontainer.json file.
+    // 	"dockerfile": "Dockerfile"
+    // },
+    "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
+    "containerEnv": {
+        "LOCAL_WORK_DIR": "${localWorkspaceFolder}",
+        "CONTAINER_WORK_DIR": "${containerWorkspaceFolder}"
+        // "OPENSSL_CONF": "/etc/ssl/openssl.cnf"
+    },
+    "remoteEnv": {
+        // the original host directory which is needed for volume mount commands from inside the container (Docker in Docker)
+        "LOCAL_WORKSPACE_FOLDER": "${localWorkspaceFolder}"
+    },
+    // Features to add to the dev container. More info: https://containers.dev/features.
+    "features": {
+        // Installing core linux components and packages
+        "ghcr.io/devcontainers/features/common-utils:latest": {},
+        "ghcr.io/devcontainers/features/docker-in-docker:latest": {
+            "moby": "false"
+        },
+        "ghcr.io/devcontainers/features/docker-outside-of-docker:latest": {
+            "moby": "false"
+        },
+        "ghcr.io/devcontainers/features/git-lfs:latest": {},
+        "ghcr.io/devcontainers/features/git:latest": {},
+        "ghcr.io/devcontainers-extra/features/zsh-plugins:latest": {},
+        "ghcr.io/devcontainers-extra/features/vscode-cli:latest": {},
+        "ghcr.io/devcontainers-extra/features/vscode-server:latest": {},
+        "ghcr.io/devcontainers-extra/features/bin:latest": {},
+        "ghcr.io/devcontainers-extra/features/devcontainers-cli:latest": {},
+    },
+    "mounts": [
+        // "source=/var/run/docker.sock,target=/var/run/docker.sock,type=bind",//Use this for a Linux/MacOS host
+        "source=//var/run/docker.sock,target=/var/run/docker.sock,type=bind", //Use this for a Windows host. Note the extra "/" in the beginning
+        "source=${env:HOME}/.ssh,target=/home/vscode/.ssh,type=bind",
+        "source=${env:HOME}/.kube,target=/home/vscode/.kube,type=bind",
+        "source=${env:HOME}/.aws,target=/home/vscode/.aws,type=bind",
+        "source=${localWorkspaceFolder}/.devcontainer/.npmrc,target=/home/vscode/.npmrc,type=bind",
+        "source=${localWorkspaceFolder}/.devcontainer/.yarnrc,target=/home/vscode/.yarnrc,type=bind",
+        "source=${localWorkspaceFolder}/.devcontainer/.zshrc,target=/home/vscode/.zshrc,type=bind",
+        "source=${localWorkspaceFolder}/.devcontainer/openssl.conf,target=/etc/ssl/openssl.conf,type=bind"
+    ],
+    // Use 'forwardPorts' to make a list of ports inside the container available locally.
+    "forwardPorts": [
+        5432,
+        6379,
+        8080
+    ],
+    "portsAttributes": {
+        "5432": {
+            "label": "Postgres"
+        },
+        "6379": {
+            "label": "Redis"
+        },
+        "8080": {
+            "label": "MCP"
+        }
+    },
+    // Use 'postCreateCommand' to run commands after the container is created.
+    "postCreateCommand": ".devcontainer/postCreateCommand.sh",
+    // Configure tool-specific properties.
+    "customizations": { //Configure properties specific to VS Code.
+        "vscode": { // Add the IDs of extenstions you want installed when the container is created}}
+            "extensions": [
+                "ms-vscode.vscode-typescript-next",
+                "ms-vscode.makefile-tools",
+                "adpyke.vscode-sql-formatter",
+                "charliermarsh.ruff",
+                "cweijan.dbclient-jdbc",
+                "cweijan.vscode-database-client2",
+                "docsmsft.docs-yaml",
+                "donjayamanne.githistory",
+                "donjayamanne.python-environment-manager",
+                "donjayamanne.python-extension-pack",
+                "ecmel.vscode-html-css",
+                "esbenp.prettier-vscode",
+                "github.copilot",
+                "github.copilot-chat",
+                "hashicorp.terraform",
+                "mechatroner.rainbow-csv",
+                "ms-edgedevtools.vscode-edge-devtools",
+                "ms-kubernetes-tools.vscode-kubernetes-tools",
+                "ms-python.autopep8",
+                "ms-python.black-formatter",
+                "ms-python.debugpy",
+                "ms-python.flake8",
+                "ms-python.gather",
+                "ms-python.isort",
+                "ms-python.mypy-type-checker",
+                "ms-python.pylint",
+                "ms-python.python",
+                "ms-python.vscode-pylance",
+                "ms-toolsai.jupyter",
+                "ms-toolsai.jupyter-keymap",
+                "ms-toolsai.jupyter-renderers",
+                "ms-toolsai.vscode-jupyter-cell-tags",
+                "ms-toolsai.vscode-jupyter-slideshow",
+                "ms-vscode-remote.remote-containers",
+                "ms-vscode-remote.remote-ssh",
+                "ms-vscode-remote.remote-ssh-edit",
+                "ms-vscode-remote.remote-wsl",
+                "ms-vscode-remote.vscode-remote-extensionpack",
+                "ms-vscode.cmake-tools",
+                "ms-vscode.hexeditor",
+                "ms-vscode.remote-explorer",
+                "ms-vscode.remote-server",
+                "ms-vscode.theme-markdownkit",
+                "ms-vscode.theme-materialkit",
+                "ms-vscode.wordcount",
+                "msjsdiag.vscode-react-native",
+                "njpwerner.autodocstring",
+                "redhat.vscode-yaml",
+                "streetsidesoftware.code-spell-checker",
+                "timonwong.shellcheck",
+                "twxs.cmake",
+                "vscode-icons-team.vscode-icons",
+                "yzhang.markdown-all-in-one"
+            ]
+        }
+    },
+    "hostRequirements": {
+        "gpu": "optional"
+    }
+    // Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
+    // "remoteUser": "root"
+}
