@@ -53,16 +53,16 @@
     "forwardPorts": [
         5432,
         6379,
-        8080
+        8000
     ],
     "portsAttributes": {
         "5432": {
             "label": "Postgres"
         },
         "6379": {
-            "label": "Redis"
+            "label": "Valkey"
         },
-        "8080": {
+        "8000": {
             "label": "MCP"
         }
     },
