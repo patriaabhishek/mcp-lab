@@ -1,0 +1,19 @@
+[project]
+name = "mcp-lab"
+version = "0.1.0"
+description = "A hands-on lab for experimenting with the Model Context Protocol (MCP). This repo is a collection of small projects, experiments, and prototypes exploring MCP servers, tools, resources, prompts, and integrations—built to learn by doing practical MCP work"
+readme = "README.md"
+authors = [
+    { name = "Abhishek Patria" }
+]
+requires-python = ">=3.13"
+dependencies = [
+    "fastmcp>=4.0.0b1,<5.0.0",
+]
+
+[project.scripts]
+mcp-lab = "mcp_lab.main:main"
+
+[build-system]
+requires = ["uv_build>=0.12.5,<0.13.0"]
+build-backend = "uv_build"
